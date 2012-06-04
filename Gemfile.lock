@@ -22,8 +22,11 @@ GEM
     dm-validations (1.2.0)
       dm-core (~> 1.2.0)
     eventmachine (0.12.10)
+    gettext (2.2.0)
+      locale
     haml (3.1.5)
     i18n (0.6.0)
+    locale (2.0.5)
     mongo (1.6.2)
       bson (~> 1.6.2)
     mongo_mapper (0.11.1)
@@ -76,6 +79,7 @@ PLATFORMS
 DEPENDENCIES
   bson (= 1.6.2)
   bson_ext (= 1.6.2)
+  gettext (= 2.2.0)
   haml (= 3.1.5)
   mongo (= 1.6.2)
   mongo_mapper (= 0.11.1)
