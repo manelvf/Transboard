@@ -1,6 +1,7 @@
 source :rubygems
 
 gem 'gettext', '2.2.0'
+gem 'fast_gettext', '0.6.7'
 gem 'haml', '3.1.5'
 gem 'sinatra', '1.3.2'
 gem 'sinatra-authentication', '0.4.1'
