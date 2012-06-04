@@ -1,0 +1,4 @@
+development:
+  host: localhost
+  database: transboarddb
+  logger: false

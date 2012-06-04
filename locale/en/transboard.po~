@@ -1,0 +1,21 @@
+msgid "Translate your files"
+msgstr "Translate any .po file"
+
+#: comment.php:33
+msgid "comentario no encontrado"
+msgstr "comentario non atopado"
+
+#: comment.php:56 comments_rss2.php:169 sneakme_rss2.php:111
+msgid "autor"
+msgstr "autor"
+
+#: comment.php:56
+msgid "resumen"
+msgstr "resumo"
+
+#: comment.php:58
+#, php-format
+msgid "comentario de %s"
+msgstr "comentario de %s"
+
+

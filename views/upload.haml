@@ -1,0 +1,42 @@
+
+.uploadForm
+
+  -if (flash[:uploadError])
+    .flash{"style"=>"padding:20px;"}
+      %span.label.label-warning
+        =flash[:uploadError]
+
+  %form(action="/uploadFile" method="POST" enctype='multipart/form-data')
+    %fieldset
+
+      %label.control-label Name
+      .control-group
+        .controls
+          %input{:type=>"text", :name=>"name", :size=>"50"}
+
+      .control-group
+        %label.control-label Choose file language
+        .controls
+          %select{:name=>"language"}
+            - LANG_CODES.each do |code, long_code|
+              %option{:value=>code}= code + ' ' + long_code
+
+      %label.control-label Indicate language variation (optional)
+      .control-group
+        .controls
+          %input{:type=>"text", :name=>"variation", :size=>"50"}
+
+      %label.control-label Description (optional)
+      .control-group
+        .controls
+          %textarea{:name=>"description", :cols=>"80", :rows=>"4"}
+
+      %label.control-label Upload a base file 
+      .control-group
+        .controls
+          %input{:type=>"file", :name=>"myFile"}
+        .controls
+
+      .control-group
+        %input{:type=>"submit", :value=>"Submit!"}
+

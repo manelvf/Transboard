@@ -1,0 +1,12 @@
+
+module Gem;def self.all_load_paths;[];end;end
+
+
+desc "Update pot/po files."
+task :updatepo do
+  require 'gettext/tools'
+  require 'gettext/haml_parser'
+  puts "here"
+  GetText.update_pofiles("transboard", Dir.glob("{lib,views}/**/*.{rb,haml}") << "transboard.rb", "transboard 1.0.0", :po_root => 'locale')
+end
+

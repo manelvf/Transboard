@@ -1,0 +1,57 @@
+# translation of PT_BR_part1.po to
+# translation of messages.po to
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PT_BR_part1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-06-30 18:28+0200\n"
+"PO-Revision-Date: 2010-07-28 20:52+0200\n"
+"Last-Translator: \n"
+"Language-Team:  <en@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: comment.php:33
+msgid "comentario no encontrado"
+msgstr "comentário não encontrado"
+
+#: comment.php:56 comments_rss2.php:169 sneakme_rss2.php:111
+msgid "autor"
+msgstr "autor"
+
+#: comment.php:56
+msgid "resumen"
+msgstr "resumo"
+
+#: comment.php:58
+#, php-format
+msgid "comentario de %s"
+msgstr "comentário de %s"
+
+#: comment.php:58 libs/html1-mobile.php:110 libs/html1.php:145 values.php:24
+#: topcomments.php:14 telnet.php:24 sitescloud.php:39 shakeit.php:93
+#: topstories.php:63 promote.php:14 sneakme/index.php:58 friends.php:32
+#: topusers.php:63 api/check_url_simple.php:18 map.php:17 cloud.php:41
+#: faq-es.php:4 topcommented.php:33
+msgid "menéame"
+msgstr "vote-me"
+
+#: comment.php:102 story.php:188 libs/link.php:702 submit.php:471
+#: backend/sneaker2.php:194
+msgid "Aviso"
+msgstr "Aviso"
+
+#: mobile/story.php:85 story.php:192 telnet.php:152 sneak.php:498
+msgid "noticia"
+msgstr "história"
+
+#: mobile/story.php:129
+msgid "comentario no insertado"
+msgstr "comentário não inserido"
+

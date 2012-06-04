@@ -1,0 +1,15 @@
+
+
+.div
+  =doc.name
+  %table{:class => "table table-bordered table-striped"}
+    %thead
+      %tr
+        %th String
+        %th Votes
+
+    %tbody
+      -doc.lines.each do |line|
+        %tr
+          %td= line.msgid
+

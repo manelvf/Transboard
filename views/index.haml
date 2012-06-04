@@ -1,0 +1,24 @@
+
+
+.row
+  .span6
+    %h4
+      %p Translate your files and help other collaborating on translations
+  .span6
+    %form{:method=>"POST",:action=>"/login"}
+      %table
+        %tr
+          %td
+            User
+          %td
+            %input{:name => "email", :size => 30, :type => "text"}
+        %tr
+          %td
+            Password
+          %td
+            %input{:name => "password", :size => 30, :type => "password"}
+      %button.btn{:type=>"submit"}
+        Submit
+      
+
+
