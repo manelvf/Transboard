@@ -59,7 +59,9 @@ end
 get '/' do
 
   unless logged_in?
-    haml :index, :format=>:html5
+    haml :index, :format=>:html5, :locals => {
+      :switches => {}
+    }
   else
     redirect '/dashboard'
   end
@@ -70,7 +72,10 @@ end
 get '/create_new_project' do
   login_required
 
-  haml :upload, :format=>:html5, :locals => {:create_new_project_active=>"active"}
+  haml :upload, :format=>:html5, :locals => {
+      :create_new_project_active=>"active",
+      :switches => {}
+    }
 end
 
 
