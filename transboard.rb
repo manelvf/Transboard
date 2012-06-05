@@ -11,6 +11,11 @@ require "sinatra/reloader"
 require 'sinatra/flash'
 require 'sinatra-authentication'
 require 'fast_gettext'
+
+class MmUser
+  key :name, String, :unique=>true
+end
+
 require File.dirname(__FILE__) + '/language_codes.rb'
 require File.dirname(__FILE__) + '/model.rb'
 require File.dirname(__FILE__) + '/upload.rb'

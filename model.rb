@@ -1,9 +1,6 @@
 require 'mongo_mapper'
 
 
-class MmUser
-  property :name, String, :unique=>true
-end
 
 #User.ensure_index [[:email, 1]], :unique => true
 
