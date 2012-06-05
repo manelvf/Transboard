@@ -11,5 +11,9 @@
     %tbody
       -doc.lines.each do |line|
         %tr
+          %td.line{:id=>line.id}= line.msgid
+          %td
+        %tr
           %td= line.msgid
+          %td
 

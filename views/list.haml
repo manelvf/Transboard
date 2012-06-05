@@ -1,0 +1,16 @@
+
+.content
+  %table.table.table-striped.list
+    %thead
+      %tr
+        %th Project
+        %th author
+    %tbody
+      -projects.each do |project|
+        %tr
+          %td.projectname
+            %a{:href=>'editproject/' + project.id}
+              = project.name
+          %td
+          
+

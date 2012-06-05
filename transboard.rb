@@ -22,6 +22,7 @@ require File.dirname(__FILE__) + '/config.rb'
 enable :sessions, :logging
 
 set :enviroment, :development
+set :sinatra_authentication_view_path, Pathname(__FILE__).dirname.expand_path + "views/auth/"
 set :public_folder, File.dirname(__FILE__) + '/static'
 
 
@@ -49,15 +50,24 @@ end
 # Views
 #
 
+
 get '/' do
-  haml :index, :format=>:html5
+
+  unless logged_in?
+    haml :index, :format=>:html5
+  else
+    redirect '/dashboard'
+  end
+
 end
+
 
 get '/create_new_project' do
   login_required
 
-  haml :upload, :format=>:html5
+  haml :upload, :format=>:html5, :locals => {:create_new_project_active=>"active"}
 end
+
 
 post '/uploadFile' do
 
@@ -88,19 +98,41 @@ get "/editproject/:id" do
   doc = Model::getDocument(params[:id])
   puts doc
 
-  haml :edit, :format=>:html5, :locals => {:doc=>doc}
+  haml :edit, :format=>:html5, :locals => {
+    :doc=>doc,
+    :switches=>{}
+  }
 end
 
 
-get "/userprojectlist" do
-  projects = {}
-  haml :list, :format=>:html5, :locals => {:projects=>projects}
+get "/editprojectoptions/:id" do
+  login_required
+
+  doc = Model::getDocument(params[:id])
+  puts doc
+
+  haml :edit, :format=>:html5, :locals => {
+    :doc=>doc,
+    :switches=>{}
+  }
 end
 
 
-get "/projectlist" do
-  projects = {}
-  haml :list, :format=>:html5, :locals => {:projects=>projects}
+get "/dashboard" do
+  projects = Document.all()
+  haml :list, :format=>:html5, :locals => {
+    :projects=>projects,
+    :switches=>{:dashboard=>true}
+  }
+end
+
+
+get "/projects" do
+  projects = Document.all()
+  haml :list, :format=>:html5, :locals => {
+    :projects=>projects,
+    :projects_active=>"active"
+  }
 end
 
 

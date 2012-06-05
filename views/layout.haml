@@ -2,7 +2,7 @@
 %head
   %title Transboard
   %link{ :href=>"/bootstrap/css/bootstrap.min.css", :rel=>"stylesheet"}
-
+  %link{ :href=>"/css/main.css", :rel=>"stylesheet"}
 
 %body
   .container
@@ -16,13 +16,13 @@
 
     .row
       %ul.nav.nav-tabs
-        %li
+        %li{:class=> switches[:dashboard] ? "active":"" }
           %a{:href=>"/dashboard"}
             Dashboard
-        %li
+        %li{:class=>switches[:projects] ? "active":""}
           %a{:href=>"/projects"}
             Projects
-        %li
+        %li{:class=>switches[:create_new_project] ? "active":""}
           %a{:href=>"/create_new_project"}
             Create new Project
 
@@ -31,4 +31,5 @@
 
   %script{:type=>"text/javascript", :src=>"/js/jquery-1.7.2.min.js"}
   %script{:type=>"text/javascript", :src=>"/bootstrap/js/bootstrap.min.js"}
+  %script{:type=>"text/javascript", :src=>"/js/main.js"}
 
