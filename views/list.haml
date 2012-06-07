@@ -3,14 +3,29 @@
   %table.table.table-striped.list
     %thead
       %tr
+        %th 
         %th Project
-        %th author
+        %th Author
     %tbody
       -projects.each do |project|
-        %tr
+        %tr.list
+          %td.links.center(style="width:120px")
+            %a{:href=>"/delete/" + project.id, :name=>"delete", :title=>"Delete"}
+              %img.hideme{:src=>"/images/without-shadows/badge-circle-cross-24-ns.png"}
+
+            %a{:href=>"/editprojectoptions/" + project.id,
+              :name=>"projectoptions", :title => "Edit Project Options"}
+              %img.hideme{:src=>"/images/without-shadows/page-pencil-24-ns.png"}
+
+            %a{:href=>"/editproject/" + project.id, :name=>"editproject", :title=>"Edit Project"}
+              %img.hideme{:src=>"/images/without-shadows/pencil-24-ns.png"}
+
+            %a{:href=>"/download/" + project.id, :name=>"download", :title=>"Download File"}
+              %img.hideme{:src=>"/images/without-shadows/badge-circle-direction-down-24-ns.png"}
           %td.projectname
-            %a{:href=>'editproject/' + project.id}
+            %a{:href=>'/editproject/' + project.id}
               = project.name
           %td
           
+
 

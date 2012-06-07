@@ -22,6 +22,10 @@ require File.dirname(__FILE__) + '/upload.rb'
 
 ENV['RACK_ENV'] = 'development'
 
+module Rack
+  Flash = true
+end
+
 require File.dirname(__FILE__) + '/config.rb'
 
 enable :sessions, :logging
@@ -59,8 +63,17 @@ end
 get '/' do
 
   unless logged_in?
+    projectTotal = Document.all().length
+
     haml :index, :format=>:html5, :locals => {
-      :switches => {}
+      :projectTotal => projectTotal,
+      :switches => {
+        :dashboard => false,
+        :create_new_project => false,
+      },
+      :linkswitches => {
+        :projects => true
+      }
     }
   else
     redirect '/dashboard'
@@ -74,7 +87,12 @@ get '/create_new_project' do
 
   haml :upload, :format=>:html5, :locals => {
       :create_new_project_active=>"active",
-      :switches => {}
+      :switches => {
+      },
+      :linkSwitches => {
+        :projects => true,
+        :dashboard => true,
+      }
     }
 end
 
@@ -110,7 +128,9 @@ get "/editproject/:id" do
 
   haml :edit, :format=>:html5, :locals => {
     :doc=>doc,
-    :switches=>{}
+    :switches=>{},
+    :linkSwitches=>{
+    }
   }
 end
 
@@ -128,8 +148,14 @@ get "/editprojectoptions/:id" do
 end
 
 
+get "/delete/:id" do
+  r = Document.update(params[:id], {:status=>"deleted"})
+  return "OK"
+end
+
+
 get "/dashboard" do
-  projects = Document.all()
+  projects = Document.all(:status => { "$not" => /deleted/ })
   haml :list, :format=>:html5, :locals => {
     :projects=>projects,
     :switches=>{:dashboard=>true}
@@ -145,5 +171,30 @@ get "/projects" do
   }
 end
 
+
+get "/download/:id" do
+  content_type 'text/plain', :charset => 'utf-8'
+  attachment 'translation.po'
+
+  d = Document.find(params[:id])
+
+  s = ""
+
+  d.lines.each do |line|
+    s += line.msgid + "\n"
+  end
+
+  return s
+end
+
+
+###############
+# Static Pages
+#
+##############
+
+get "/about" do
+  haml :about, :format=>:html5, :locals => {}
+end
 
 

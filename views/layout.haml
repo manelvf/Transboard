@@ -1,3 +1,5 @@
+- switches ||= {}
+- linkSwitches ||= {}
 
 %head
   %title Transboard
@@ -16,18 +18,49 @@
 
     .row
       %ul.nav.nav-tabs
-        %li{:class=> switches[:dashboard] ? "active":"" }
-          %a{:href=>"/dashboard"}
-            Dashboard
-        %li{:class=>switches[:projects] ? "active":""}
-          %a{:href=>"/projects"}
-            Projects
-        %li{:class=>switches[:create_new_project] ? "active":""}
-          %a{:href=>"/create_new_project"}
-            Create new Project
+        -if linkSwitches[:dashboard]
+          %li{:class=> switches[:dashboard] ? "active":"" }
+            %a{:href=>"/dashboard"}
+              Dashboard
+
+        -if linkSwitches[:projects]
+          %li{:class=>switches[:projects] ? "active":""}
+            %a{:href=>"/projects"}
+              Projects
+
+        -if linkSwitches[:create_new_project]
+          %li{:class=>switches[:create_new_project] ? "active":""}
+            %a{:href=>"/create_new_project"}
+              Create new Project
+
 
     .body
       = yield
+
+
+    %footer.footer
+      .row
+        .span2
+          &nbsp;
+        .span2
+          %a{:href=>"/about"}
+            About
+        .span2
+          %a{:href=>"https://github.com/manelvf/Transboard/issues"}
+            Bug Report
+        .span2
+          %a{:href=>"https://github.com/manelvf/Transboard"}
+            Code on Github
+        .span2
+          %a{:href=>"http://www.opensource.org/licenses/mit-license.php"}
+            License
+      .row
+        .span5
+          &nbsp;
+        .span2
+          &copy; 2012 Manel Villar
+        .span3
+          &nbsp;
 
   %script{:type=>"text/javascript", :src=>"/js/jquery-1.7.2.min.js"}
   %script{:type=>"text/javascript", :src=>"/bootstrap/js/bootstrap.min.js"}

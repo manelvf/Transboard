@@ -3,7 +3,35 @@ td.projectname {
   cursor:pointer;
 }
 
-td.line {
+img.hideme {
+  visibility:hidden;
   cursor:pointer;
+}
+
+
+footer {
+  border-top:1px solid #E5E5E5;
+  margin-top:45px;
+  padding:35px 0px 35px 0px;
+}
+
+.span6 h3 {
+  padding-top: 30px;
+}
+
+table.login td {
+  padding: 8px; 
+}
+
+.aboutbody {
+  padding-bottom:300px;
+}
+
+footer .row {
+  padding-top:20px;
+}
+
+.center {
+  text-align:center !important;
 }
 
