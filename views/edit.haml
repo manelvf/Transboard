@@ -3,19 +3,40 @@
 .container
 
 
-  =doc.name
-  %table{:class => "table table-bordered table-striped"}
+  .doctitle
+    %h2
+      Edit File - #{doc.name}
+  
+  %table{:class => "table table-bordered edit"}
     %thead
       %tr
-        %th String
-        %th Votes
+        %th 
+        %th 
 
     %tbody
       -doc.lines.each do |line|
-        %tr
-          %td.line{:id=>line.id}= line.msgid
-          %td
-        %tr
-          %td= line.msgid
+        %tr.line
+          %td.line= line.msgid
           %td
 
+        -line.proposals.each do |prop|
+          %tr
+            %td
+              =prop.msgstr
+            %td
+              %span
+                =prop.votes.length
+              %a{:href=>"#", :id=>"id" + line.id, :name=>"prop" + prop.id, :class=>"voteLink"}
+                %img{:src=>"/images/without-shadows/arrow-up-24-ns.png"}
+
+        %tr
+          %td{}
+            %input{:style=>"width:600px; min-height:30px;",
+              :type=>"text",
+              :class=>"line",
+              :id=>line.id}
+          %td
+
+
+:javascript
+  var documentId = "#{doc.id}";

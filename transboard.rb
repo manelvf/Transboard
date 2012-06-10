@@ -11,7 +11,10 @@ require "sinatra/reloader"
 require 'sinatra/flash'
 require 'sinatra-authentication'
 require 'fast_gettext'
+require 'pony'
 
+
+# add user to authentification
 class MmUser
   key :name, String, :unique=>true
 end
@@ -19,6 +22,7 @@ end
 require File.dirname(__FILE__) + '/language_codes.rb'
 require File.dirname(__FILE__) + '/model.rb'
 require File.dirname(__FILE__) + '/upload.rb'
+
 
 ENV['RACK_ENV'] = 'development'
 
@@ -63,7 +67,7 @@ end
 get '/' do
 
   unless logged_in?
-    projectTotal = Document.all().length
+    projectTotal = Document.all(:status => { "$not" => /deleted/ }).length
 
     haml :index, :format=>:html5, :locals => {
       :projectTotal => projectTotal,
@@ -72,7 +76,7 @@ get '/' do
         :create_new_project => false,
       },
       :linkswitches => {
-        :projects => true
+        :create_new_project => true
       }
     }
   else
@@ -124,43 +128,118 @@ get "/editproject/:id" do
   login_required
 
   doc = Model::getDocument(params[:id])
-  puts doc
+  #puts doc
 
   haml :edit, :format=>:html5, :locals => {
     :doc=>doc,
     :switches=>{},
     :linkSwitches=>{
+        :projects => true,
+        :dashboard => true,
+        :create_new_project =>true
     }
   }
 end
 
 
-get "/editprojectoptions/:id" do
-  login_required
+# add a proposal to a line
+post "/addline" do
 
-  doc = Model::getDocument(params[:id])
-  puts doc
+  #l = Line.find(params[:id]) # line id
+  #puts l 
+  prop = {:msgstr=>params[:text], :authorId=>current_user.id}
+  
+  doc = Model::getDocument(params[:docId])
+  p = doc.lines.find(params[:id]).proposals << Proposal.new(prop)
 
-  haml :edit, :format=>:html5, :locals => {
-    :doc=>doc,
-    :switches=>{}
-  }
-end
+  doc.save
 
-
-get "/delete/:id" do
-  r = Document.update(params[:id], {:status=>"deleted"})
   return "OK"
 end
 
 
-get "/dashboard" do
-  projects = Document.all(:status => { "$not" => /deleted/ })
-  haml :list, :format=>:html5, :locals => {
-    :projects=>projects,
-    :switches=>{:dashboard=>true}
+# vote a proposal
+post "/vote" do
+
+  doc = Model::getDocument(params[:docId])
+  lines = doc.lines.find(params[:lineId])
+  prop = lines.proposals.find(params[:propId])
+
+  # search same author votes
+  prop.votes.each do |vote|
+
+    if (vote[:authorId] == current_user.id.to_s)
+      return "VOTED"
+    end
+  end
+
+  prop.votes << Vote.new({:authorId => current_user.id})
+  doc.save
+
+  return "OK"
+
+end
+
+
+# Edit project options View
+get "/projectoptions/:id" do
+  login_required
+
+  doc = Model::getDocument(params[:id])
+
+  haml :projectoptions, :format=>:html5, :locals => {
+    :doc=>doc,
+    :switches=>{},
+    :linkSwitches=>{
+        :projects => true,
+        :dashboard => true,
+        :create_new_project =>true
+    }
   }
 end
+
+
+# delete a project
+get "/delete/:id" do
+  Document.update(params[:id], {:status=>"deleted"})
+  return "OK"
+end
+
+
+# show all projects where user is listed as author or collaborator
+get "/dashboard" do
+  projects = Document.all(:status => { "$not" => /deleted/ })
+  
+  authorNames = {}
+
+  projects.each do |p|
+    if (p[:authorId].length > 8)
+      a = $db.collection("mm_users").find(:_id => BSON::ObjectId(p[:authorId]))
+      #puts a
+      puts a.first["email"]
+
+      unless a.first.nil?
+        puts "aaaaaaaaaaaaaaaaaaaa"
+        #puts a.first
+        #puts a.first.inspect
+        authorNames[p["id"]] = a.first["email"]
+      end
+    end
+  end
+  puts authorNames.inspect
+
+  haml :list, :format=>:html5, :locals => {
+    :authorNames => authorNames,
+    :projects=>projects,
+    :switches=>{:dashboard=>true},
+    :linkSwitches=>{
+      :projects => true,
+      :dashboard => true,
+      :create_new_project =>true
+    }
+  }
+end
+
 
 
 get "/projects" do
@@ -172,6 +251,18 @@ get "/projects" do
 end
 
 
+# ask to collaborate in a project
+get "/askcollaborate:id" do
+  doc = Model::getDocument(params[:id])
+
+  doc.collaborations << Collaboration.new({:authorId=>current_user.id,
+                                          :status=>"pending" })  
+
+  return "OK"
+end
+
+
+# download a translation file
 get "/download/:id" do
   content_type 'text/plain', :charset => 'utf-8'
   attachment 'translation.po'

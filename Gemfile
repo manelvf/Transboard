@@ -11,5 +11,6 @@ gem 'mongo', '1.6.2'
 gem 'mongo_mapper', '0.11.1'
 gem 'bson', '1.6.2'
 gem 'bson_ext', '1.6.2'
+gem 'pony', '1.4'
 
 

@@ -23,6 +23,14 @@ table.login td {
   padding: 8px; 
 }
 
+table.edit {
+  margin-top:20px;
+}
+
+table.edit tr.line {
+  background-color: lightblue;
+}
+
 .aboutbody {
   padding-bottom:300px;
 }
@@ -33,5 +41,21 @@ footer .row {
 
 .center {
   text-align:center !important;
+}
+
+.voteLink {
+  cursor:pointer;
+}
+
+
+/* login */
+form.auth div input {
+  min-height:24px;
+} 
+
+
+/* collaborators */
+div.collab {
+  padding-top: 30px;
 }
 

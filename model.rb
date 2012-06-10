@@ -15,9 +15,11 @@ class Document
   key :authorId, String, :required => true
   key :status, String, :required => true
   key :is_private, Boolean
-  key :collaboratorIds, Array
 
+  many :collaborations
   many :lines
+
+  timestamps!
 end
 
 
@@ -28,7 +30,7 @@ class Line
   key :msgstr, String
 
   many :proposals
-  belongs_to :Document
+  embedded_in :Document
 end
 
 class Proposal
@@ -38,16 +40,31 @@ class Proposal
   key :authorId, String
   
   many :votes
-  belongs_to :Line
+  embedded_in :Line
+
+  timestamps!
 end
 
 class Vote
   include MongoMapper::EmbeddedDocument
 
   key :authorId, String
-  key :when, Time
 
-  belongs_to :Proposal
+  embedded_in :Proposal
+
+  timestamps!
+end
+
+
+class Collaboration
+  include MongoMapper::EmbeddedDocument
+
+  key :authorId, String
+  key :status, String
+
+  embedded_in :Document
+
+  timestamps!
 end
 
 

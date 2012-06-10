@@ -1,7 +1,7 @@
 #sinatra_authentication
   %h1.page_title{:style=>"padding-bottom:30px;"} Signup 
   #sinatra_authentication_flash{:style=>"color:red;"}= flash[:notice]
-  %form{:action => "/signup", :method => "post"}
+  %form.signup.auth{:action => "/signup", :method => "post"}
     .field
       .nolabel
         %label{:for => "user_name"} Name
