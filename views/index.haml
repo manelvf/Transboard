@@ -2,26 +2,27 @@
 
 .row
   .span6
-    %h3 Translate your files and help others collaborating on translations
+    %h3 Translate your files or help others collaborating on translations
     %h3 Currenty #{projectTotal} active projects, start your own NOW!
-  .span6
-    %form{:method=>"POST",:action=>"/login"}
-      %table.login
-        %tr
-          %td
-            Email
-          %td
-            %input{:name => "email", :size => 30, :type => "text"}
-        %tr
-          %td
-            Password
-          %td
-            %input{:name => "password", :size => 30, :type => "password"}
-        %tr
-          %td
-            %button.btn{:type=>"submit"}
-              Submit
-      
+  .span5
+    .indexlogin
+      %form.form-horizontal{:method=>"POST",:action=>"/login"}
+        %fieldset
+          .control-group
+            %label.control-label
+              Email
+            .controls
+              %input{:class=>"large", :name => "email", :size => 30, :type => "text"}
+          .control-group
+            %label.control-label
+              Password
+            .controls
+              %input{:class=>"large", :name => "password", :size => 30, :type => "password"}
+          .control-group
+            .controls
+              %button.btn{:type=>"submit"}
+                Submit
+        
 .row{:style=>"min-height:400px;"}
 
 

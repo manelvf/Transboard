@@ -59,3 +59,38 @@ div.collab {
   padding-top: 30px;
 }
 
+/* Index Login Form */
+div.indexlogin {
+  padding-top:50px;
+}
+
+input.big {
+  height:30px;
+}
+
+.username {
+  text-align:right;
+}
+
+
+input.editline {
+  max-width:800px;
+  width: 100%;
+  min-height:28px;
+}
+
+td.languages {
+}
+
+td.links a {
+  text-decoration:none;
+}
+
+
+.projectoptionsheader {
+  padding-bottom:30px;
+}
+
+td.collaborator {
+  font-size: 0.9em;
+}

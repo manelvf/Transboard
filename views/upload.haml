@@ -1,3 +1,6 @@
+- doc ||= Object.new
+- projectoptions ||= false
+- collaborations ||= false
 
 .uploadForm
 
@@ -6,25 +9,42 @@
       %span.label.label-warning
         =flash[:uploadError]
 
-  %form(action="/uploadFile" method="POST" enctype='multipart/form-data')
+  %form.well(action="/uploadFile" method="POST" enctype='multipart/form-data')
+
+    - if doc.respond_to?('name')
+      %h4.projectoptionsheader Edit project options 
+
     %fieldset
 
       %label.control-label Name
       .control-group
         .controls
-          %input{:type=>"text", :name=>"name", :size=>"50"}
+          %input{:type=>"text", :name=>"name", :size=>"50",
+            :class=>"span3 big",
+            :value=>(doc.respond_to?('name') ? doc.name : "") }
 
       .control-group
-        %label.control-label Choose file language
+        %label.control-label Choose file origin language
         .controls
-          %select{:name=>"language"}
+          %select{:name=>"languagefrom"}
             - LANG_CODES.each do |code, long_code|
-              %option{:value=>code}= code + ' ' + long_code
+              %option{:value=>code,
+                :selected => ("selected" if doc.respond_to? 'languagefrom' and code == doc.languagefrom )}= code + ' ' + long_code
+
+      .control-group
+        %label.control-label Choose file destination language
+        .controls
+          %select{:name=>"languageto"}
+            - LANG_CODES.each do |code, long_code|
+              %option{:value=>code,
+                :selected => (doc.respond_to?('languageto') and code == doc.languageto ? "selected" : "" )}= code + ' ' + long_code
 
       %label.control-label Indicate language variation (optional)
       .control-group
         .controls
-          %input{:type=>"text", :name=>"variation", :size=>"50"}
+          %input.big{:type=>"text", :name=>"variation",
+            :value => (doc.respond_to?('variation') ? doc.variation : "" ),
+            :size=>"50"}
 
       %label.control-label Description (optional)
       .control-group
@@ -43,15 +63,37 @@
             Private
 
 
-      %label.control-label
-        Upload a base file (supported formats: 
-        %a{:href=>"http://www.gnu.org/software/gettext/manual/html_node/PO-Files.html"} .po
-        )
-      .control-group
-        .controls
-          %input{:type=>"file", :name=>"myFile"}
-        .controls
+      - if doc.respond_to?('name')
+        %label.control-label
+          Upload a translation file (supported formats: 
+          %a{:href=>"http://www.gnu.org/software/gettext/manual/html_node/PO-Files.html"} .po
+          )
+        .control-group
+          .controls
+            %input{:type=>"file", :name=>"myFile"}
+          .controls
 
       .control-group
         %input{:type=>"submit", :value=>"Submit!"}
 
+
+  - if collaborations
+    %form.well
+      %a{:href => "#collaborations"}
+      %h4 Manage Collaborations
+
+      %table.table.table-bordered.table-striped
+        %tbody
+          - collaborations.each do |c|
+            - if collaborators[c[:authorId]]
+              %tr
+                %td.collaborator
+                  =collaborators[c[:authorId]][0]["name"] || collaborators[c[:authorId]][0]["email"]
+                %td
+                  %select.status{:id => "status"+c[:authorId]}
+                    - statusOptions.each do |so|
+                      %option{:value => so, :selected => ("selected" if so == c.status ) }
+                        =so
+
+      
+    

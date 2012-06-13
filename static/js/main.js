@@ -11,6 +11,30 @@ var App = {
 
 $(document).ready( function() {
 
+  // Login Form
+  $("form.signup").submit( function(e) {
+    e.preventDefault(); 
+
+    el = $(this);
+
+    var hasSpaces = [];
+    el.find("input").each( function() {
+      var t = $(this);
+
+      if (t.attr("type") != "submit" && /\s/g.test(t.val())) {
+        hasSpaces.push(t.attr("id"));
+      }
+    });
+
+    if (hasSpaces.length > 0) {
+      console.log(hasSpaces);
+      alert("Forms fields "+String(hasSpaces)+" should not include spaces");
+    } else {
+      this.submit();
+    }
+  });
+
+
   $("td.line").click(function() {
     var id = $(this).attr("id");
     s = "";
@@ -21,11 +45,11 @@ $(document).ready( function() {
   });
 
   $("tr.list").mouseover(function() {
-    $(this).find("img").css({"visibility":"visible"});
+    $(this).find("img").not('.donothide').css({"visibility":"visible"});
   });
 
   $("tr.list").mouseout(function() {
-    $(this).find("img").css({"visibility":"hidden"});
+    $(this).find("img").not('.donothide').css({"visibility":"hidden"});
   });
 
 
@@ -39,6 +63,8 @@ $(document).ready( function() {
     }
   });
 
+  
+  // add a new translation line
   $("td > input.line").keypress( function(e) {
     var el = $(this);
 
@@ -92,6 +118,26 @@ $(document).ready( function() {
 
   });
 
+
+  // status
+  $("select.status").change( function() {
+    var el = $(this);
+
+    var authorId = el.attr("id").match(/^status(.*)$/)
+
+    if (!authorId[1])
+      return;
+
+    $.post("/changestatus", {
+      'docId' : documentId,
+      'authorId' : authorId[1],
+      'status' : el.val()
+    }, function(d) {
+      console.log(d);
+    });
+
+  });
+
 });
 
 
@@ -102,16 +148,18 @@ function callAjax(e, el) {
 
   var id = el.attr("href").match(/[^\/]*$/)
   if (id && id[0] && id[0].length > 0) {
-    $.get( '/'+el.attr("name") + '/' + id[0], SUCCESS[el.attr["name"]] ); 
+    $.get( '/'+el.attr("name") + '/' + id[0], SUCCESS[el.attr("name")](el) ); 
   }
 
 }
 
 SUCCESS = {
-  'delete' : function() {
+  'delete' : function(el) {
       el.parent().parent().remove();
   },
-  'askcollaborate': null
+  'askcollaborate': function(el) {
+      el.parent().parent().remove();
+  }
 }
 
 

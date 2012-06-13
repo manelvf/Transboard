@@ -72,7 +72,7 @@ get '/' do
     haml :index, :format=>:html5, :locals => {
       :projectTotal => projectTotal,
       :switches => {
-        :dashboard => false,
+        :projects=>true,
         :create_new_project => false,
       },
       :linkswitches => {
@@ -90,12 +90,15 @@ get '/create_new_project' do
   login_required
 
   haml :upload, :format=>:html5, :locals => {
-      :create_new_project_active=>"active",
       :switches => {
+        :projects => false,
+        :dashboard => false,
+        :create_new_project => true
       },
       :linkSwitches => {
         :projects => true,
         :dashboard => true,
+        :create_new_project => true
       }
     }
 end
@@ -128,7 +131,6 @@ get "/editproject/:id" do
   login_required
 
   doc = Model::getDocument(params[:id])
-  #puts doc
 
   haml :edit, :format=>:html5, :locals => {
     :doc=>doc,
@@ -187,15 +189,47 @@ get "/projectoptions/:id" do
 
   doc = Model::getDocument(params[:id])
 
-  haml :projectoptions, :format=>:html5, :locals => {
-    :doc=>doc,
-    :switches=>{},
-    :linkSwitches=>{
+  collaborations = []
+  collaborators = {}
+
+  doc.collaborations.each do |c|
+    collaborators[c[:authorId]] = $db.collection("mm_users").find(:_id => BSON::ObjectId(c[:authorId])).to_a
+  end
+
+  puts collaborators
+
+  haml :upload, :format=>:html5, :locals => {
+      :doc => doc,
+      :collaborators => collaborators,
+      :collaborations => doc.collaborations,
+      :statusOptions => ['pending','accepted','admin','blocked'],
+      :switches => {
+        :projects => false,
+        :dashboard => false,
+        :create_new_project => false
+      },
+      :linkSwitches => {
         :projects => true,
         :dashboard => true,
-        :create_new_project =>true
+        :create_new_project => true
+      }
     }
-  }
+end
+
+
+# change collaborator status
+post "/changestatus" do
+  doc = Model::getDocument(params[:docId])
+
+  doc.collaborations.map do |c|
+    if c[:authorId] == params[:authorId]
+      c["status"] = params[:status]
+    end
+    puts c.inspect
+  end
+
+  doc.save
+      
 end
 
 
@@ -208,34 +242,49 @@ end
 
 # show all projects where user is listed as author or collaborator
 get "/dashboard" do
-  projects = Document.all(:status => { "$not" => /deleted/ })
-  
+  puts current_user.id
+  #projects = Document.all(:status => { "$not" => /deleted/ }, :authorId => current_user.id )
+  #projects = Document.all({:authorId => current_user.id })
+  projects = Document.all({:authorId => current_user.id.to_s})
+
   authorNames = {}
+  newPermissions = {}
 
   projects.each do |p|
     if (p[:authorId].length > 8)
       a = $db.collection("mm_users").find(:_id => BSON::ObjectId(p[:authorId]))
-      #puts a
-      puts a.first["email"]
+      name = a.first["email"]
 
-      unless a.first.nil?
-        puts "aaaaaaaaaaaaaaaaaaaa"
-        #puts a.first
-        #puts a.first.inspect
-        authorNames[p["id"]] = a.first["email"]
+      unless name.nil?
+        authorNames[p[:authorId]] = name
       end
     end
+
+    if (p.collaborations.length > 0)
+      p.collaborations.each do |c|
+        if c[:status] == "pending" 
+          newPermissions[p.id] = true
+        end
+      end
+    end
+
   end
-  puts authorNames.inspect
 
   haml :list, :format=>:html5, :locals => {
     :authorNames => authorNames,
+    :newPermissions => newPermissions,
     :projects=>projects,
     :switches=>{:dashboard=>true},
     :linkSwitches=>{
       :projects => true,
       :dashboard => true,
       :create_new_project =>true
+    },
+    :linkAnchors => {
+      :delete=>true,
+      :projectoptions=>true,
+      :editproject=>true,
+      :download=>true
     }
   }
 end
@@ -243,20 +292,66 @@ end
 
 
 get "/projects" do
-  projects = Document.all()
+  projects = Document.all({:visibility => {:$ne => true}})
+
+  authorNames = {}
+  dontAskCollaborate = {}
+
+  projects.each do |p|
+    if (p[:authorId].length > 8)
+
+      a = $db.collection("mm_users").find(:_id => BSON::ObjectId(p[:authorId]))
+      name = a.first["email"]
+
+      if (p[:authorId] == current_user.id.to_s)
+        dontAskCollaborate[p[:_id]] = true 
+      end
+
+      unless name.nil?
+        authorNames[p[:authorId]] = name
+      end
+
+      p.collaborations.each do |c|
+        if (c[:authorId] == current_user.id.to_s)
+          dontAskCollaborate[p[:_id]] = true 
+        end
+      end
+
+    end
+  end
+
   haml :list, :format=>:html5, :locals => {
-    :projects=>projects,
-    :projects_active=>"active"
+    :dontAskCollaborate => dontAskCollaborate,
+    :authorNames => authorNames,
+    :projects => projects,
+    :projects_active => "active",
+    :switches=>{:projects=>true},
+    :linkSwitches=>{
+      :projects => true,
+      :dashboard => true,
+      :create_new_project =>true
+    },
+    :linkAnchors => {
+      :download=>true,
+      :askcollaborate=>true
+    }
   }
 end
 
 
 # ask to collaborate in a project
-get "/askcollaborate:id" do
+get "/askcollaborate/:id" do
   doc = Model::getDocument(params[:id])
+
+  doc.collaborations.each do |c|
+    if (c[:authorId] == current_user.id.to_s)
+      return "ERROR"
+    end
+  end
 
   doc.collaborations << Collaboration.new({:authorId=>current_user.id,
                                           :status=>"pending" })  
+  doc.save
 
   return "OK"
 end

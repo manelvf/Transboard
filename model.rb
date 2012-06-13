@@ -1,20 +1,18 @@
 require 'mongo_mapper'
 
 
-
-#User.ensure_index [[:email, 1]], :unique => true
-
-
 class Document
   include MongoMapper::Document
 
   key :name, String, :required => true
-  key :language, String, :required => true
+  key :languagefrom, String, :required => true
+  key :languageto, String, :required => true
   key :variation, String
   key :description, String
   key :authorId, String, :required => true
   key :status, String, :required => true
-  key :is_private, Boolean
+  key :visibility, String, :required => true
+  key :originalFilename, String
 
   many :collaborations
   many :lines
@@ -75,13 +73,22 @@ module Model
 
   # Save whole document (upload)
   def self.createDocument(params, authorId)
+    if params[:visibility] == "private"
+      visibility = true
+    else
+      visibility = false
+    end
+
     return Document.create({
       :authorId=>authorId,
       :name=>params[:name],
-      :language=>params[:language],
+      :languagefrom=>params[:languagefrom],
+      :languageto=>params[:languageto],
       :variation=>params[:variation],
       :description=>params[:description],
-      :status=>"pending"
+      :visibility=>visibility,
+      :status=>"pending",
+      :originalFilename=>params[:originalFilename]
     })
   end
 
@@ -95,7 +102,6 @@ module Model
   end
 
   def self.getDocument(id)
-    puts id
     return Document.find(id)
   end
 
