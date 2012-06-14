@@ -63,7 +63,7 @@
             Private
 
 
-      - if doc.respond_to?('name')
+      - unless doc.respond_to?('name')
         %label.control-label
           Upload a translation file (supported formats: 
           %a{:href=>"http://www.gnu.org/software/gettext/manual/html_node/PO-Files.html"} .po
