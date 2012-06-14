@@ -1,5 +1,9 @@
 - linkAnchors ||= {}
 - newPermissions ||= {}
+- otherprojects ||= []
+- doNotEditOptions ||= {}
+- doNotEditStrings ||= {}
+- doNotDelete ||= {}
 
 .content
   %table.table.table-striped.list
@@ -11,51 +15,55 @@
         %th Languages
     %tbody
 
-      -projects.each do |project|
-        %tr.list
+      -metaprojects.each do |projectsName, projects|
+        %tr
+          %td{:colspan => 4}= projectsName
 
-          %td.links.center(style="width:140px")
+        -projects.each do |project|
+          %tr.list
 
-            - if linkAnchors[:delete]
-              %a{:href=>"/delete/" + project.id, :name=>"delete", :title=>"Delete"}
-                %img.hideme{:src=>"/images/without-shadows/badge-circle-cross-24-ns.png" }
+            %td.links.center(style="width:140px")
 
-            - if linkAnchors[:projectoptions]
-              %a{:href=>"/projectoptions/" + project.id,
-                :name=>"projectoptions", :title => "Edit Project Options"}
-                %img.hideme{:src=>"/images/without-shadows/page-pencil-24-ns.png"}
+              - if linkAnchors[:delete] and (not doNotDelete[project.id])
+                %a{:href=>"/delete/" + project.id, :name=>"delete", :title=>"Delete"}
+                  %img.hideme{:src=>"/images/without-shadows/badge-circle-cross-24-ns.png" }
 
-            - if linkAnchors[:editproject]
-              %a{:href=>"/editproject/" + project.id, :name=>"editproject", :title=>"Edit Project"}
-                %img.hideme{:src=>"/images/without-shadows/pencil-24-ns.png"}
+              - if linkAnchors[:projectoptions] and (not doNotEditOptions[project.id])
+                %a{:href=>"/projectoptions/" + project.id,
+                  :name=>"projectoptions", :title => "Edit Project Options"}
+                  %img.hideme{:src=>"/images/without-shadows/page-pencil-24-ns.png"}
 
-            - if linkAnchors[:download]
-              %a{:href=>"/download/" + project.id, :name=>"download", :title=>"Download File"}
-                %img.hideme{:src=>"/images/without-shadows/badge-circle-direction-down-24-ns.png"}
+              - if linkAnchors[:editproject]
+                %a{:href=>"/editproject/" + project.id, :name=>"editproject", :title=>"Edit Project"}
+                  %img.hideme{:src=>"/images/without-shadows/pencil-24-ns.png"}
 
-            - if linkAnchors[:askcollaborate]
-              - unless dontAskCollaborate[project.id]
-                %a{:href=>"/askcollaborate/" + project.id, :name=>"askcollaborate", :title=>"Ask to Collaborate"}
-                  %img.hideme{:src=>"/images/without-shadows/email-plus-24-ns.png"}
+              - if linkAnchors[:download]
+                %a{:href=>"/download/" + project.id, :name=>"download", :title=>"Download File"}
+                  %img.hideme{:src=>"/images/without-shadows/badge-circle-direction-down-24-ns.png"}
 
-            - if newPermissions and newPermissions[project.id]
-              %a{:href=>"/projectoptions/" + project.id,
-                :name=>"projectoptions", :title => "New Users interested"}
-                %img.donothide.addusers{:src=>"/images/without-shadows/person-plus-24-ns.png"}
+              - if linkAnchors[:askcollaborate]
+                - unless dontAskCollaborate[project.id]
+                  %a{:href=>"/askcollaborate/" + project.id, :name=>"askcollaborate", :title=>"Ask to Collaborate"}
+                    %img.hideme{:src=>"/images/without-shadows/email-plus-24-ns.png"}
 
-          %td.projectname.links
+              - if newPermissions and newPermissions[project.id]
+                %a{:href=>"/projectoptions/" + project.id,
+                  :name=>"projectoptions", :title => "New Users interested"}
+                  %img.donothide.addusers{:src=>"/images/without-shadows/person-plus-24-ns.png"}
 
-            %a{:href=>'/editproject/' + project.id}
-              = project.name 
+            %td.projectname.links
 
-          %td
-            =authorNames[project[:authorId]] 
-          
-          %td.languages
-            %span{:title=>""}
-              #{project.languagefrom}
-            \=>
-            %span{:title=>""}
-              #{project.languageto}
+              %a{:href=>'/editproject/' + project.id}
+                = project.name 
+
+            %td
+              =authorNames[project[:authorId]] 
+            
+            %td.languages
+              %span{:title=>""}
+                #{project.languagefrom}
+              \=>
+              %span{:title=>""}
+                #{project.languageto}
 
 

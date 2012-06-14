@@ -202,7 +202,7 @@ get "/projectoptions/:id" do
       :doc => doc,
       :collaborators => collaborators,
       :collaborations => doc.collaborations,
-      :statusOptions => ['pending','accepted','admin','blocked'],
+      :statusOptions => UserStatusOptions,
       :switches => {
         :projects => false,
         :dashboard => false,
@@ -270,10 +270,52 @@ get "/dashboard" do
 
   end
 
+
+  doNotDelete = {}
+  doNotEditOptions= {}
+  doNotEditStrings= {}
+
+  otherprojects = Document.all({"collaborations.authorId" => current_user.id.to_s })
+
+  otherprojects.each do |o|
+    if (o[:authorId].length > 8)
+      a = $db.collection("mm_users").find(:_id => BSON::ObjectId(o[:authorId]))
+      name = a.first["email"]
+
+      unless name.nil?
+        authorNames[o[:authorId]] = name
+      end
+    end
+
+    o.collaborations.delete_if do |c|
+      doNotDelete[o.id] = true
+      doNotEditOptions[o.id] = true
+      doNotEditStrings[o.id] = true
+
+      if (c[:authorId] == current_user.id.to_s)    
+        if (["admin","accepted"].include?(c[:status])) 
+          doNotEditStrings[o.id] = false 
+          if (c[:status] == "admin")
+            doNotEditOptions[o.id] = false
+          end
+        end
+
+      end
+    end
+
+
+  end
+
+
   haml :list, :format=>:html5, :locals => {
     :authorNames => authorNames,
     :newPermissions => newPermissions,
-    :projects=>projects,
+    :metaprojects=>{"Your Projects" => projects,
+      "Collaborations" => otherprojects
+    },
+    :doNotDelete=> doNotDelete,
+    :doNotEditOptions => doNotEditOptions,
+    :doNotEditStrings => doNotEditStrings,
     :switches=>{:dashboard=>true},
     :linkSwitches=>{
       :projects => true,
@@ -323,7 +365,7 @@ get "/projects" do
   haml :list, :format=>:html5, :locals => {
     :dontAskCollaborate => dontAskCollaborate,
     :authorNames => authorNames,
-    :projects => projects,
+    :metaprojects => { "Public Projects" => projects },
     :projects_active => "active",
     :switches=>{:projects=>true},
     :linkSwitches=>{
@@ -362,12 +404,25 @@ get "/download/:id" do
   content_type 'text/plain', :charset => 'utf-8'
   attachment 'translation.po'
 
-  d = Document.find(params[:id])
+  doc = Document.find(params[:id])
 
   s = ""
 
-  d.lines.each do |line|
-    s += line.msgid + "\n"
+  doc.lines.each do |line|
+    s += 'msgid "' + line.msgid + "\"\n"
+    
+    finalProposal = ""
+    finalProposalVotes = 0
+    line.proposals.each do |p|
+      if (p.votes.length >= finalProposalVotes)
+        finalProposal = p.msgstr
+        finalProposalVotes = p.votes.length
+      end
+    end
+
+    s += 'msgstr "' + finalProposal + "\"\n"
+    s += "\n"
+
   end
 
   return s

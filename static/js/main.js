@@ -1,3 +1,5 @@
+if (typeof console == "undefined") console = { log: function() {} } 
+
 
 /************
  * App Singleton
@@ -27,7 +29,7 @@ $(document).ready( function() {
     });
 
     if (hasSpaces.length > 0) {
-      console.log(hasSpaces);
+      //console.log(hasSpaces);
       alert("Forms fields "+String(hasSpaces)+" should not include spaces");
     } else {
       this.submit();
@@ -133,7 +135,7 @@ $(document).ready( function() {
       'authorId' : authorId[1],
       'status' : el.val()
     }, function(d) {
-      console.log(d);
+      //console.log(d);
     });
 
   });
@@ -152,6 +154,7 @@ function callAjax(e, el) {
   }
 
 }
+
 
 SUCCESS = {
   'delete' : function(el) {

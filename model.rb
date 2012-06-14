@@ -1,6 +1,11 @@
 require 'mongo_mapper'
 
 
+# User status for collaborations 
+UserStatusOptions = ['pending','accepted','admin','blocked']
+
+
+# Translation document model
 class Document
   include MongoMapper::Document
 
