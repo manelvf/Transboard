@@ -23,6 +23,7 @@ class Document
   many :lines
 
   timestamps!
+  embedded_callbacks_off
 end
 
 
@@ -34,6 +35,8 @@ class Line
 
   many :proposals
   embedded_in :Document
+
+  embedded_callbacks_off
 end
 
 class Proposal

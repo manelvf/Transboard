@@ -2,6 +2,7 @@
 $LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__))) unless $LOAD_PATH.include?(File.expand_path(File.dirname(__FILE__)))
 
 
+
 require 'rubygems'
 require 'mongo'
 require 'haml'
@@ -22,6 +23,9 @@ end
 require File.dirname(__FILE__) + '/language_codes.rb'
 require File.dirname(__FILE__) + '/model.rb'
 require File.dirname(__FILE__) + '/upload.rb'
+
+Encoding.default_external = Encoding::UTF_8
+Encoding.default_internal = nil
 
 
 ENV['RACK_ENV'] = 'development'
