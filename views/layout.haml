@@ -2,76 +2,76 @@
 - doc ||= {}
 - switches ||= {}
 - linkSwitches ||= {}
+%html
+  %head
+    %title Transboard
+    %link{ :href=>"/bootstrap/css/bootstrap.min.css", :rel=>"stylesheet"}
+    %link{ :href=>"/css/main.css", :rel=>"stylesheet"}
 
-%head
-  %title Transboard
-  %link{ :href=>"/bootstrap/css/bootstrap.min.css", :rel=>"stylesheet"}
-  %link{ :href=>"/css/main.css", :rel=>"stylesheet"}
+  %body
+    .container
+      .header.row(style="min-height:80px;padding-top:20px;padding:bottom:20px,padding-left:20px;")
+        .span10
+          %a{:href=>"/"}
+            %h1 Transboard
+        .span2
+          .loginFrame(style = "float:right")
+            .username
+              - if !!session[:user]
+                = current_user[:name] || current_user[:username]
+            = render_login_logout
 
-%body
-  .container
-    .header.row(style="min-height:80px;padding-top:20px;padding:bottom:20px,padding-left:20px;")
-      .span10
-        %a{:href=>"/"}
-          %h1 Transboard
-      .span2
-        .loginFrame(style = "float:right")
-          .username
-            - if !!session[:user]
-              = current_user[:name] || current_user[:username]
-          = render_login_logout
-
-    .row
-      %ul.nav.nav-tabs
-        -if linkSwitches[:dashboard]
-          %li{:class=> switches[:dashboard] ? "active":"" }
-            %a{:href=>"/dashboard"}
-              Dashboard
-
-        -if linkSwitches[:projects]
-          %li{:class=>switches[:projects] ? "active":""}
-            %a{:href=>"/projects"}
-              Projects
-
-        -if linkSwitches[:create_new_project]
-          %li{:class=>switches[:create_new_project] ? "active":""}
-            %a{:href=>"/create_new_project"}
-              Create new Project
-
-
-    .body
-      = yield
-
-
-    %footer.footer
       .row
-        .span2
-          &nbsp;
-        .span2
-          %a{:href=>"/about"}
-            About
-        .span2
-          %a{:href=>"https://github.com/manelvf/Transboard/issues"}
-            Bug Report
-        .span2
-          %a{:href=>"https://github.com/manelvf/Transboard"}
-            Code on Github
-        .span2
-          %a{:href=>"http://www.opensource.org/licenses/mit-license.php"}
-            License
-      .row
-        .span5
-          &nbsp;
-        .span2
-          &copy; 2012 Manel Villar
-        .span3
-          &nbsp;
+        %ul.nav.nav-tabs
+          -if linkSwitches[:dashboard]
+            %li{:class=> switches[:dashboard] ? "active":"" }
+              %a{:href=>"/dashboard"}
+                Dashboard
 
-  %script{:type=>"text/javascript", :src=>"/js/jquery-1.7.2.min.js"}
-  %script{:type=>"text/javascript", :src=>"/bootstrap/js/bootstrap.min.js"}
-  %script{:type=>"text/javascript", :src=>"/js/main.js"}
-  - if doc.respond_to?("id")
-    :javascript
-        var documentId = '#{doc.id}';
+          -if linkSwitches[:projects]
+            %li{:class=>switches[:projects] ? "active":""}
+              %a{:href=>"/projects"}
+                Projects
+
+          -if linkSwitches[:create_new_project]
+            %li{:class=>switches[:create_new_project] ? "active":""}
+              %a{:href=>"/create_new_project"}
+                Create new Project
+
+
+      .body
+        = yield
+
+
+      %footer.footer
+        .row
+          .span2
+            &nbsp;
+          .span2
+            %a{:href=>"/about"}
+              About
+          .span2
+            %a{:href=>"https://github.com/manelvf/Transboard/issues"}
+              Bug Report
+          .span2
+            %a{:href=>"https://github.com/manelvf/Transboard"}
+              Code on Github
+          .span2
+            %a{:href=>"http://www.opensource.org/licenses/mit-license.php"}
+              License
+        .row
+          .span5
+            &nbsp;
+          .span2
+            &copy; 2012 Manel Villar
+          .span3
+            &nbsp;
+
+    %script{:type=>"text/javascript", :src=>"/js/jquery-1.7.2.min.js"}
+    %script{:type=>"text/javascript", :src=>"/bootstrap/js/bootstrap.min.js"}
+    %script{:type=>"text/javascript", :src=>"/js/main.js"}
+    - if doc.respond_to?("id")
+      :javascript
+          var documentId = '#{doc.id}';
 
 
