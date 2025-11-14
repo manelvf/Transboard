@@ -55,11 +55,36 @@ rake deps:audit
 rake lint:check
 ```
 
+### Testing
+
+This project has a comprehensive test suite covering models, uploads, and routes. See [TESTING.md](TESTING.md) for detailed information.
+
+```bash
+# Run all tests
+rake test
+
+# Run specific test suites
+rake test_models     # Model tests only
+rake test_upload     # Upload tests only
+rake test_routes     # Route tests only
+
+# Run with coverage
+rake test:coverage
+```
+
 ### Available Rake Tasks
 
 ```bash
 # View all tasks
 rake -T
+
+# Testing
+rake test            # Run all tests
+rake test_models     # Run model tests only
+rake test_upload     # Run upload tests only
+rake test_routes     # Run route tests only
+rake test:coverage   # Run tests with coverage
+rake test:clean      # Clean test database
 
 # Update translation files
 rake updatepo
@@ -87,6 +112,7 @@ rake lint:fix        # Auto-fix issues
 ## Documentation
 
 - [Dependency Management](DEPENDENCIES.md) - Modern dependency management guide
+- [Testing Guide](TESTING.md) - Comprehensive testing documentation
 - [Environment Configuration](.env.example) - Configuration template
 
 ## License

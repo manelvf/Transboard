@@ -79,8 +79,20 @@ jobs:
         run: |
           timeout 60 bash -c 'until nc -z localhost 27017; do sleep 1; done'
 
-      - name: Run tests
-        run: bundle exec rake test || true
+      - name: Run model tests
+        run: bundle exec rake test_models
+        env:
+          RACK_ENV: test
+          MONGODB_URI: mongodb://localhost:27017/transboard_test
+
+      - name: Run upload tests
+        run: bundle exec rake test_upload
+        env:
+          RACK_ENV: test
+          MONGODB_URI: mongodb://localhost:27017/transboard_test
+
+      - name: Run route tests
+        run: bundle exec rake test_routes
         env:
           RACK_ENV: test
           MONGODB_URI: mongodb://localhost:27017/transboard_test
@@ -92,6 +104,7 @@ jobs:
           name: coverage-report
           path: coverage/
           retention-days: 30
+        continue-on-error: true
 
   dependency-check:
     name: Dependency Updates

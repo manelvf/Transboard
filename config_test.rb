@@ -1,7 +1,13 @@
+# frozen_string_literal: true
 
-conn = Mongo::Connection.new("localhost")
-database = 'transboarddb_test'
+# Test database configuration for MongoDB
 
-MongoMapper.connection = conn 
-MongoMapper.database = database
-$db = conn.db(database)
+# Modern Mongo client API (2.x+)
+client = Mongo::Client.new(['localhost:27017'], database: 'transboarddb_test')
+
+# MongoMapper configuration
+MongoMapper.connection = client
+MongoMapper.database = 'transboarddb_test'
+
+# Legacy $db variable for compatibility
+$db = client.database

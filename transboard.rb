@@ -8,7 +8,7 @@ require 'mongo'
 require 'haml'
 require 'mongo_mapper'
 require 'sinatra'
-require "sinatra/reloader" 
+require 'sinatra/contrib' if development?
 require 'sinatra/flash'
 require 'sinatra-authentication'
 require 'fast_gettext'

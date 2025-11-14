@@ -80,7 +80,60 @@ namespace :lint do
 end
 
 # ============================================================================
+# Test Tasks
+# ============================================================================
+require 'rake/testtask'
+
+Rake::TestTask.new(:test) do |t|
+  t.libs << 'test'
+  t.test_files = FileList['test/*_test.rb']
+  t.verbose = true
+  t.warning = false
+end
+
+desc "Run all tests"
+task :test_all => :test
+
+desc "Run model tests only"
+Rake::TestTask.new(:test_models) do |t|
+  t.libs << 'test'
+  t.test_files = FileList['test/models_test.rb']
+  t.verbose = true
+end
+
+desc "Run upload tests only"
+Rake::TestTask.new(:test_upload) do |t|
+  t.libs << 'test'
+  t.test_files = FileList['test/upload_test.rb']
+  t.verbose = true
+end
+
+desc "Run route/integration tests only"
+Rake::TestTask.new(:test_routes) do |t|
+  t.libs << 'test'
+  t.test_files = FileList['test/routes_test.rb']
+  t.verbose = true
+end
+
+namespace :test do
+  desc "Run tests with coverage report"
+  task :coverage do
+    ENV['COVERAGE'] = 'true'
+    Rake::Task[:test].invoke
+  end
+
+  desc "Clean test database"
+  task :clean do
+    require_relative 'config_test'
+    require_relative 'model'
+    puts "Cleaning test database..."
+    Document.delete_all
+    puts "Test database cleaned!"
+  end
+end
+
+# ============================================================================
 # Default Task
 # ============================================================================
-desc "Run security audit and check code quality"
-task default: ['deps:audit', 'lint:check']
+desc "Run tests, security audit, and code quality checks"
+task default: [:test, 'deps:audit', 'lint:check']
