@@ -34,7 +34,7 @@ gem 'fast_gettext', '~> 2.3'        # Performance-optimized gettext
 gem 'pony', '~> 1.13'                # Simple email sending
 
 # Web Server
-gem 'puma', '~> 6.4'                 # Modern, concurrent web server
+gem 'puma', '~> 7.1'                 # Modern, concurrent web server
 
 # ============================================================================
 # Development Dependencies
