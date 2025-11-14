@@ -1,0 +1,92 @@
+# RuboCop Configuration for Transboard
+# https://docs.rubocop.org/rubocop/configuration.html
+
+require:
+  - rubocop-performance
+
+AllCops:
+  TargetRubyVersion: 3.2
+  NewCops: enable
+  Exclude:
+    - 'vendor/**/*'
+    - 'bin/**/*'
+    - 'node_modules/**/*'
+    - 'uploads/**/*'
+    - 'locale/**/*'
+    - 'fixtures/**/*'
+
+# ============================================================================
+# Style Cops
+# ============================================================================
+
+Style/Documentation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: true
+  EnforcedStyle: always
+
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: single_quotes
+
+# ============================================================================
+# Layout Cops
+# ============================================================================
+
+Layout/LineLength:
+  Max: 120
+  Exclude:
+    - 'config/**/*'
+    - 'rakefile'
+
+Layout/IndentationConsistency:
+  Enabled: true
+  EnforcedStyle: normal
+
+# ============================================================================
+# Metrics Cops
+# ============================================================================
+
+Metrics/MethodLength:
+  Max: 25
+  CountAsOne: ['array', 'hash', 'heredoc']
+
+Metrics/ClassLength:
+  Max: 150
+
+Metrics/BlockLength:
+  Max: 50
+  Exclude:
+    - 'test/**/*'
+    - 'rakefile'
+
+Metrics/AbcSize:
+  Max: 25
+
+# ============================================================================
+# Naming Cops
+# ============================================================================
+
+Naming/FileName:
+  Enabled: false  # Allow file names like transboard.rb
+
+# ============================================================================
+# Security Cops
+# ============================================================================
+
+Security/Open:
+  Enabled: true
+
+Security/Eval:
+  Enabled: true
+
+# ============================================================================
+# Performance Cops
+# ============================================================================
+
+Performance/Casecmp:
+  Enabled: true
+
+Performance/StringReplacement:
+  Enabled: true

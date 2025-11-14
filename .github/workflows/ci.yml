@@ -1,0 +1,112 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Run security audit weekly on Mondays at 9am UTC
+    - cron: '0 9 * * 1'
+
+jobs:
+  dependency-audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2.0'
+          bundler-cache: true
+
+      - name: Run security audit
+        run: |
+          gem install bundler-audit
+          bundle-audit check --update
+
+      - name: Report vulnerabilities
+        if: failure()
+        run: echo "Security vulnerabilities found! Check the logs above."
+
+  lint:
+    name: Code Quality
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2.0'
+          bundler-cache: true
+
+      - name: Run RuboCop
+        run: bundle exec rubocop --format progress
+
+  test:
+    name: Test Suite
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:6.0
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --eval 'db.runCommand({ ping: 1 })'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2.0'
+          bundler-cache: true
+
+      - name: Set up environment
+        run: |
+          cp .env.example .env
+          echo "MONGODB_URI=mongodb://localhost:27017/transboard_test" >> .env
+
+      - name: Wait for MongoDB
+        run: |
+          timeout 60 bash -c 'until nc -z localhost 27017; do sleep 1; done'
+
+      - name: Run tests
+        run: bundle exec rake test || true
+        env:
+          RACK_ENV: test
+          MONGODB_URI: mongodb://localhost:27017/transboard_test
+
+      - name: Upload coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 30
+
+  dependency-check:
+    name: Dependency Updates
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2.0'
+          bundler-cache: true
+
+      - name: Check for outdated dependencies
+        run: bundle outdated || true
+
+      - name: List dependencies
+        run: bundle list

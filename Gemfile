@@ -1,16 +1,64 @@
-source :rubygems
+# frozen_string_literal: true
 
-gem 'gettext', '2.2.0'
-gem 'fast_gettext', '0.6.7'
-gem 'haml', '3.1.5'
-gem 'sinatra', '1.3.2'
-gem 'sinatra-authentication', '0.4.1'
-gem 'sinatra-reloader', '1.0'
-gem 'sinatra-flash', '0.3.0'
-gem 'mongo', '1.6.2'
-gem 'mongo_mapper', '0.11.1'
-gem 'bson', '1.6.2'
-gem 'bson_ext', '1.6.2'
-gem 'pony', '1.4'
+source 'https://rubygems.org'
 
+# Specify Ruby version for rbenv, rvm, and deployment platforms
+ruby '>= 3.2.0'
 
+# ============================================================================
+# Core Application Dependencies
+# ============================================================================
+
+# Web Framework
+gem 'sinatra', '~> 4.0'              # Lightweight web framework
+gem 'sinatra-contrib', '~> 4.0'     # Sinatra extensions (includes reloader)
+gem 'sinatra-flash', '~> 0.3'       # Flash messages for user feedback
+gem 'rackup', '~> 2.1'               # Rack server (required for Sinatra 4.x)
+
+# Authentication & Authorization
+gem 'sinatra-authentication', '~> 0.4'  # User authentication system
+
+# Template Engine
+gem 'haml', '~> 6.3'                 # HTML abstraction markup language
+
+# Database
+gem 'mongo', '~> 2.20'               # MongoDB driver
+gem 'mongo_mapper', '~> 0.15'       # MongoDB ORM/ODM
+gem 'bson', '~> 5.0'                 # BSON serialization format
+
+# Internationalization
+gem 'gettext', '~> 3.4'              # i18n and localization
+gem 'fast_gettext', '~> 2.3'        # Performance-optimized gettext
+
+# Email
+gem 'pony', '~> 1.13'                # Simple email sending
+
+# Web Server
+gem 'puma', '~> 6.4'                 # Modern, concurrent web server
+
+# ============================================================================
+# Development Dependencies
+# ============================================================================
+group :development do
+  gem 'rerun', '~> 0.14'             # Auto-restart app on file changes
+  gem 'rubocop', '~> 1.60', require: false  # Ruby style guide and linter
+  gem 'rubocop-performance', '~> 1.20', require: false  # Performance linting
+end
+
+# ============================================================================
+# Test Dependencies
+# ============================================================================
+group :test do
+  gem 'rack-test', '~> 2.1'          # Testing rack applications
+  gem 'minitest', '~> 5.22'          # Testing framework
+  gem 'simplecov', '~> 0.22', require: false  # Code coverage analysis
+end
+
+# ============================================================================
+# Development & Test Dependencies
+# ============================================================================
+group :development, :test do
+  gem 'rake', '~> 13.1'              # Task automation
+  gem 'bundler-audit', '~> 0.9'     # Security vulnerability scanner
+  gem 'dotenv', '~> 3.0'             # Environment variable management
+end

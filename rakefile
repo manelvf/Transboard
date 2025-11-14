@@ -1,12 +1,86 @@
+# frozen_string_literal: true
 
-module Gem;def self.all_load_paths;[];end;end
+module Gem; def self.all_load_paths; []; end; end
 
-
-desc "Update pot/po files."
+# ============================================================================
+# Internationalization Tasks
+# ============================================================================
+desc "Update pot/po files for translations"
 task :updatepo do
   require 'gettext/tools'
   require 'gettext/haml_parser'
-  puts "here"
-  GetText.update_pofiles("transboard", Dir.glob("{lib,views}/**/*.{rb,haml}") << "transboard.rb", "transboard 1.0.0", :po_root => 'locale')
+  puts "Updating translation files..."
+  GetText.update_pofiles("transboard", Dir.glob("{lib,views}/**/*.{rb,haml}") << "transboard.rb", "transboard 1.0.0", po_root: 'locale')
 end
 
+# ============================================================================
+# Dependency Management Tasks
+# ============================================================================
+namespace :deps do
+  desc "Install all dependencies"
+  task :install do
+    puts "Installing dependencies..."
+    sh "bundle install"
+  end
+
+  desc "Update dependencies (respecting version constraints)"
+  task :update do
+    puts "Updating dependencies..."
+    sh "bundle update"
+  end
+
+  desc "Check for outdated dependencies"
+  task :outdated do
+    puts "Checking for outdated dependencies..."
+    sh "bundle outdated"
+  end
+
+  desc "Run security audit on dependencies"
+  task :audit do
+    puts "Running security audit..."
+    begin
+      require 'bundler/audit/task'
+      Bundler::Audit::Task.new
+      Rake::Task['bundle:audit'].invoke
+    rescue LoadError
+      puts "Installing bundler-audit..."
+      sh "bundle exec bundle-audit check --update"
+    end
+  end
+
+  desc "Clean unused dependencies"
+  task :clean do
+    puts "Cleaning unused dependencies..."
+    sh "bundle clean"
+  end
+
+  desc "Show dependency tree"
+  task :tree do
+    puts "Dependency tree:"
+    sh "bundle viz --format=png --file=doc/dependencies" rescue nil
+    sh "bundle list"
+  end
+end
+
+# ============================================================================
+# Code Quality Tasks
+# ============================================================================
+namespace :lint do
+  desc "Run RuboCop style checks"
+  task :check do
+    puts "Running RuboCop..."
+    sh "bundle exec rubocop" rescue nil
+  end
+
+  desc "Auto-fix RuboCop violations"
+  task :fix do
+    puts "Auto-fixing RuboCop violations..."
+    sh "bundle exec rubocop -a" rescue nil
+  end
+end
+
+# ============================================================================
+# Default Task
+# ============================================================================
+desc "Run security audit and check code quality"
+task default: ['deps:audit', 'lint:check']

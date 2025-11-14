@@ -1,6 +1,30 @@
+# Lock files (but keep Gemfile.lock for reproducible builds)
 *.lock
+!Gemfile.lock
+
+# Editor temporary files
 *~
 *.swp
+
+# Ruby version manager files
 *.rmvrc
+
+# Environment variables
+.env
+.env.local
+
+# Coverage reports
+coverage/
+
+# Dependencies
+vendor/bundle
+.bundle/
+!.bundle/config
+
+# Bundler binstubs
+bin/
+
+# Logs
+*.log
 
 
