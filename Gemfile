@@ -28,7 +28,7 @@ gem 'bson', '~> 5.0'                 # BSON serialization format
 
 # Internationalization
 gem 'gettext', '~> 3.4'              # i18n and localization
-gem 'fast_gettext', '~> 2.3'        # Performance-optimized gettext
+gem 'fast_gettext', '~> 4.1'        # Performance-optimized gettext
 
 # Email
 gem 'pony', '~> 1.13'                # Simple email sending

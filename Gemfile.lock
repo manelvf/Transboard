@@ -45,8 +45,9 @@ GEM
     dotenv (3.1.8)
     drb (2.2.3)
     erubi (1.13.1)
-    fast_gettext (2.4.0)
+    fast_gettext (4.1.1)
       prime
+      racc
     ffi (1.17.2)
     ffi (1.17.2-aarch64-linux-gnu)
     ffi (1.17.2-aarch64-linux-musl)
@@ -234,7 +235,7 @@ DEPENDENCIES
   bson (~> 5.0)
   bundler-audit (~> 0.9)
   dotenv (~> 3.0)
-  fast_gettext (~> 2.3)
+  fast_gettext (~> 4.1)
   gettext (~> 3.4)
   haml (~> 6.3)
   minitest (~> 5.26)
