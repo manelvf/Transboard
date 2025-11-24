@@ -45,8 +45,9 @@ GEM
     dotenv (3.1.8)
     drb (2.2.3)
     erubi (1.13.1)
-    fast_gettext (2.4.0)
+    fast_gettext (4.1.1)
       prime
+      racc
     ffi (1.17.2)
     ffi (1.17.2-aarch64-linux-gnu)
     ffi (1.17.2-aarch64-linux-musl)
@@ -86,7 +87,7 @@ GEM
       net-pop
       net-smtp
     mini_mime (1.1.5)
-    minitest (5.26.1)
+    minitest (5.26.2)
     mongo (2.21.3)
       base64
       bson (>= 4.14.1, < 6.0.0)
@@ -123,7 +124,7 @@ GEM
       singleton
     prism (1.6.0)
     public_suffix (6.0.2)
-    puma (6.6.1)
+    puma (7.1.0)
       nio4r (~> 2.0)
     racc (1.8.1)
     rack (3.2.4)
@@ -234,14 +235,14 @@ DEPENDENCIES
   bson (~> 5.0)
   bundler-audit (~> 0.9)
   dotenv (~> 3.0)
-  fast_gettext (~> 2.3)
+  fast_gettext (~> 4.1)
   gettext (~> 3.4)
   haml (~> 7.0)
-  minitest (~> 5.22)
+  minitest (~> 5.26)
   mongo (~> 2.20)
   mongo_mapper (~> 0.15)
   pony (~> 1.13)
-  puma (~> 6.4)
+  puma (~> 7.1)
   rack-test (~> 2.1)
   rackup (~> 2.1)
   rake (~> 13.1)

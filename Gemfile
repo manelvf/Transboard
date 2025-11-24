@@ -28,13 +28,13 @@ gem 'bson', '~> 5.0'                 # BSON serialization format
 
 # Internationalization
 gem 'gettext', '~> 3.4'              # i18n and localization
-gem 'fast_gettext', '~> 2.3'        # Performance-optimized gettext
+gem 'fast_gettext', '~> 4.1'        # Performance-optimized gettext
 
 # Email
 gem 'pony', '~> 1.13'                # Simple email sending
 
 # Web Server
-gem 'puma', '~> 6.4'                 # Modern, concurrent web server
+gem 'puma', '~> 7.1'                 # Modern, concurrent web server
 
 # ============================================================================
 # Development Dependencies
@@ -50,7 +50,7 @@ end
 # ============================================================================
 group :test do
   gem 'rack-test', '~> 2.1'          # Testing rack applications
-  gem 'minitest', '~> 5.22'          # Testing framework
+  gem 'minitest', '~> 5.26'          # Testing framework
   gem 'simplecov', '~> 0.22', require: false  # Code coverage analysis
 end
 
