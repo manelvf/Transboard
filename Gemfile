@@ -19,7 +19,7 @@ gem 'rackup', '~> 2.1'               # Rack server (required for Sinatra 4.x)
 gem 'sinatra-authentication', '~> 0.4'  # User authentication system
 
 # Template Engine
-gem 'haml', '~> 6.3'                 # HTML abstraction markup language
+gem 'haml', '~> 7.0'                 # HTML abstraction markup language
 
 # Database
 gem 'mongo', '~> 2.20'               # MongoDB driver
