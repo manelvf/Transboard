@@ -13,7 +13,7 @@ ruby '>= 3.2.0'
 gem 'sinatra', '~> 4.0'              # Lightweight web framework
 gem 'sinatra-contrib', '~> 4.0'     # Sinatra extensions (includes reloader)
 gem 'sinatra-flash', '~> 0.3'       # Flash messages for user feedback
-gem 'rackup', '~> 2.1'               # Rack server (required for Sinatra 4.x)
+gem 'rackup', '~> 2.3'               # Rack server (required for Sinatra 4.x)
 
 # Authentication & Authorization
 gem 'sinatra-authentication', '~> 0.4'  # User authentication system
