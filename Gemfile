@@ -60,5 +60,5 @@ end
 group :development, :test do
   gem 'rake', '~> 13.1'              # Task automation
   gem 'bundler-audit', '~> 0.9'     # Security vulnerability scanner
-  gem 'dotenv', '~> 3.0'             # Environment variable management
+  gem 'dotenv', '~> 3.2'             # Environment variable management
 end
