@@ -22,7 +22,7 @@ gem 'sinatra-authentication', '~> 0.4'  # User authentication system
 gem 'haml', '~> 7.0'                 # HTML abstraction markup language
 
 # Database
-gem 'mongo', '~> 2.20'               # MongoDB driver
+gem 'mongo', '~> 2.22'               # MongoDB driver
 gem 'mongo_mapper', '~> 0.15'       # MongoDB ORM/ODM
 gem 'bson', '~> 5.0'                 # BSON serialization format
 
