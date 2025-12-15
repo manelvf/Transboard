@@ -50,7 +50,7 @@ end
 # ============================================================================
 group :test do
   gem 'rack-test', '~> 2.1'          # Testing rack applications
-  gem 'minitest', '~> 5.26'          # Testing framework
+  gem 'minitest', '~> 5.27'          # Testing framework
   gem 'simplecov', '~> 0.22', require: false  # Code coverage analysis
 end
 
@@ -60,5 +60,5 @@ end
 group :development, :test do
   gem 'rake', '~> 13.1'              # Task automation
   gem 'bundler-audit', '~> 0.9'     # Security vulnerability scanner
-  gem 'dotenv', '~> 3.0'             # Environment variable management
+  gem 'dotenv', '~> 3.2'             # Environment variable management
 end
