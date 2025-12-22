@@ -87,7 +87,8 @@ GEM
       net-pop
       net-smtp
     mini_mime (1.1.5)
-    minitest (5.26.2)
+    minitest (6.0.0)
+      prism (~> 1.5)
     mongo (2.22.0)
       base64
       bson (>= 4.14.1, < 6.0.0)
@@ -238,7 +239,7 @@ DEPENDENCIES
   fast_gettext (~> 4.1)
   gettext (~> 3.4)
   haml (~> 7.1)
-  minitest (~> 5.26)
+  minitest (~> 6.0)
   mongo (~> 2.22)
   mongo_mapper (~> 0.15)
   pony (~> 1.13)

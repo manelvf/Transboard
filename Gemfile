@@ -50,7 +50,7 @@ end
 # ============================================================================
 group :test do
   gem 'rack-test', '~> 2.1'          # Testing rack applications
-  gem 'minitest', '~> 5.26'          # Testing framework
+  gem 'minitest', '~> 6.0'           # Testing framework
   gem 'simplecov', '~> 0.22', require: false  # Code coverage analysis
 end
 
