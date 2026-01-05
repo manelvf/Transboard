@@ -41,7 +41,7 @@ gem 'puma', '~> 7.1'                 # Modern, concurrent web server
 # ============================================================================
 group :development do
   gem 'rerun', '~> 0.14'             # Auto-restart app on file changes
-  gem 'rubocop', '~> 1.60', require: false  # Ruby style guide and linter
+  gem 'rubocop', '~> 1.82', require: false  # Ruby style guide and linter
   gem 'rubocop-performance', '~> 1.20', require: false  # Performance linting
 end
 
@@ -60,5 +60,5 @@ end
 group :development, :test do
   gem 'rake', '~> 13.1'              # Task automation
   gem 'bundler-audit', '~> 0.9'     # Security vulnerability scanner
-  gem 'dotenv', '~> 3.0'             # Environment variable management
+  gem 'dotenv', '~> 3.2'             # Environment variable management
 end
