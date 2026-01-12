@@ -87,7 +87,7 @@ GEM
       net-pop
       net-smtp
     mini_mime (1.1.5)
-    minitest (6.0.0)
+    minitest (6.0.1)
       prism (~> 1.5)
     mongo (2.22.0)
       base64
