@@ -125,7 +125,7 @@ GEM
       singleton
     prism (1.7.0)
     public_suffix (6.0.2)
-    puma (7.1.0)
+    puma (7.2.0)
       nio4r (~> 2.0)
     racc (1.8.1)
     rack (3.2.4)
@@ -243,7 +243,7 @@ DEPENDENCIES
   mongo (~> 2.22)
   mongo_mapper (~> 0.15)
   pony (~> 1.13)
-  puma (~> 7.1)
+  puma (~> 7.2)
   rack-test (~> 2.1)
   rackup (~> 2.3)
   rake (~> 13.1)
