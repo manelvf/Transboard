@@ -41,7 +41,7 @@ gem 'puma', '~> 7.1'                 # Modern, concurrent web server
 # ============================================================================
 group :development do
   gem 'rerun', '~> 0.14'             # Auto-restart app on file changes
-  gem 'rubocop', '~> 1.82', require: false  # Ruby style guide and linter
+  gem 'rubocop', '~> 1.84', require: false  # Ruby style guide and linter
   gem 'rubocop-performance', '~> 1.20', require: false  # Performance linting
 end
 
